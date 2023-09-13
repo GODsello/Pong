@@ -7,6 +7,7 @@
 #include "GameObject/GameObject.h";
 #include "Entities/Ball.h";
 #include "Entities/Player.h";
+#include "AI/AI.h";
 
 #include "Constants.h";
 
@@ -27,10 +28,19 @@ public:
 	void LoadEntities();
 
 private:
+	void DeleteEntities();
+	bool CheckWin();
+
 	Window* window;
 	float deltaTime;
 	std::vector<GameObject*> entities;
 	Player* player;
 	Player* playerRight;
+	Ball* ball;
+
+	AI* ai;
+
+	bool hasWin;
+	bool hasMoved;
 };
 

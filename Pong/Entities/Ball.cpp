@@ -11,8 +11,11 @@ Ball::Ball(unsigned int id,
 
 	this->deltaTime = deltaTime;
 	this->velocity = velocity;
-	yDir = 1.0f;
-	xDir = 1.0f;
+
+	srand((unsigned)time(NULL));
+
+	yDir = rand() % 10 < 5 ? -0.8f : 0.8f;
+	xDir = rand() % 10 < 5 ? -1.0f : 1.0f;
 }
 
 void Ball::Render(SDL_Renderer* renderer)
@@ -26,9 +29,6 @@ void Ball::Update()
 	xPos += xDir * velocity * *deltaTime;
 	yPos += yDir * velocity * *deltaTime;
 
-	if (xPos < 0.0 || xPos + width > SCREEN_WIDTH) {
-		xDir *= -1.0f;
-	}
 	if (yPos < 0.0f || yPos + height > SCREEN_HEIGHT)
 	{
 		yPos -= yDir * velocity * *deltaTime;
@@ -41,6 +41,13 @@ void Ball::Update()
 
 void Ball::OnCollision(SDL_Rect collision)
 {
+	velocity += 0.03f;
+	float midBall = rect.y + rect.h / 2.0f;
+	float midCollided = collision.y + collision.h / 2.0f;
+
+	yDir = midBall < midCollided ? -0.8 : 0.8;
+
+	yPos += yDir * velocity * *deltaTime;
 	xPos -= xDir * velocity * *deltaTime;
 	xDir *= -1;
 }

@@ -1,9 +1,11 @@
 #pragma once
 
+#include <iostream>
+#include <vector>
+
 #include "../GameObject/GameObject.h"
 #include "../Constants.h"
 #include "Player.h";
-#include <vector>
 
 class Ball : public GameObject
 {
@@ -16,6 +18,8 @@ public:
 	void Update();
 
 	void OnCollision(SDL_Rect collision);
+
+	float GetXDir() { return xDir; }
 
 private:
 	float xDir, yDir;

@@ -155,6 +155,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AI\AI.cpp" />
     <ClCompile Include="App.cpp" />
     <ClCompile Include="Entities\Ball.cpp" />
     <ClCompile Include="GameObject\GameObject.cpp" />
@@ -163,6 +164,7 @@
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AI\AI.h" />
     <ClInclude Include="App.h" />
     <ClInclude Include="Entities\Ball.h" />
     <ClInclude Include="Constants.h" />

@@ -4,7 +4,11 @@ App::App(){
 	window = new Window();
 	player = nullptr;
 	playerRight = nullptr;
+	ball = nullptr;
 	deltaTime = 0.0f;
+	hasWin = false;
+	hasMoved = false;
+	ai = nullptr;
 }
 
 App::~App(){
@@ -32,6 +36,11 @@ void App::OnLoop()
 
 	while (!quit)
 	{
+		if (hasWin)
+		{
+			LoadEntities();
+		}
+
 		float startTime = SDL_GetTicks();
 		while (SDL_PollEvent(&event) != 0)
 		{
@@ -43,9 +52,12 @@ void App::OnLoop()
 
 		HandleEvents();
 
-		OnUpdate();
+		if (hasMoved)
+		{
+			OnUpdate();
 
-		CheckCollisions();
+			CheckCollisions();
+		}
 
 		//Clear screen
 		SDL_SetRenderDrawColor(window->GetRenderer(), 0x0, 0x00, 0x00, 0x00);
@@ -57,6 +69,13 @@ void App::OnLoop()
 		}
 
 		SDL_RenderPresent(window->GetRenderer());
+
+		hasWin = CheckWin();
+		if (hasWin)
+		{
+			DeleteEntities();
+			hasMoved = false;
+		}
 		
 		deltaTime = (SDL_GetTicks() - startTime);
 		if (deltaTime < TICKS_PER_FRAME)
@@ -100,21 +119,27 @@ void App::HandleEvents()
 	if (currentKeyStates[SDL_SCANCODE_W])
 	{
 		player->MoveUp(deltaTime);
+		hasMoved = true;
 	}
 	if (currentKeyStates[SDL_SCANCODE_S]) {
 		player->MoveDown(deltaTime);
+		hasMoved = true;
 	}
-	if (currentKeyStates[SDL_SCANCODE_UP])
+	/*if (currentKeyStates[SDL_SCANCODE_UP])
 	{
 		playerRight->MoveUp(deltaTime);
+		hasMoved = true;
 	}
 	if (currentKeyStates[SDL_SCANCODE_DOWN]) {
 		playerRight->MoveDown(deltaTime);
-	}
+		hasMoved = true;
+	}*/
+
+	ai->MovePlayer(deltaTime);
 }
 
 void App::LoadEntities() {
-	Ball* ball = new Ball(entities.size(),
+	ball = new Ball(entities.size(),
 		SCREEN_WIDTH/2.0f - ballConstants.width/2.0f , 
 		SCREEN_HEIGHT/2.0f - ballConstants.height/2.0f,
 		ballConstants.width, ballConstants.height, 
@@ -134,4 +159,36 @@ void App::LoadEntities() {
 		playerConstants.width, playerConstants.height, 
 		1.0f);
 	entities.push_back(playerRight);
+
+	ai = new AI(playerRight, ball, 20.0f);
+}
+
+void App::DeleteEntities()
+{
+	for (GameObject* g : entities) {
+		delete g;
+	}
+	entities.clear();
+
+	ball = nullptr;
+	player = nullptr;
+	playerRight = nullptr;
+}
+
+bool App::CheckWin() 
+{
+	float ballPos = ball->GetRect()->x;
+	float ballWidth = ball->GetRect()->w;
+
+	if (ballPos + ballWidth < 0.0f)
+	{
+		return true;
+	}
+
+	if (ballPos + ballWidth > SCREEN_WIDTH)
+	{
+		return true;
+	}
+
+	return false;
 }
