@@ -17,3 +17,9 @@ struct {
 	float width = 20.0f;
 	float height = 150.0f;
 } playerConstants;
+
+enum {
+	SMALL_FONT = 28,
+	MEDIUM_FONT = 36,
+	BIG_FONT = 48
+};

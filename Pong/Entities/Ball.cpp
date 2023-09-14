@@ -14,7 +14,7 @@ Ball::Ball(unsigned int id,
 
 	srand((unsigned)time(NULL));
 
-	yDir = rand() % 10 < 5 ? -0.8f : 0.8f;
+	yDir = rand() % 10 < 5 ? -0.5f : 0.5f;
 	xDir = rand() % 10 < 5 ? -1.0f : 1.0f;
 }
 
@@ -45,7 +45,7 @@ void Ball::OnCollision(SDL_Rect collision)
 	float midBall = rect.y + rect.h / 2.0f;
 	float midCollided = collision.y + collision.h / 2.0f;
 
-	yDir = midBall < midCollided ? -0.8 : 0.8;
+	yDir = midBall < midCollided ? -0.5 : 0.5;
 
 	yPos += yDir * velocity * *deltaTime;
 	xPos -= xDir * velocity * *deltaTime;

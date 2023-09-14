@@ -9,6 +9,9 @@ App::App(){
 	hasWin = false;
 	hasMoved = false;
 	ai = nullptr;
+	score = nullptr;
+	pause = false;
+	font = nullptr;
 }
 
 App::~App(){
@@ -17,7 +20,13 @@ App::~App(){
 
 bool App::OnInit()
 {
-	return window->Init("Pong", SCREEN_WIDTH, SCREEN_HEIGHT);
+	bool result = window->Init("Pong", SCREEN_WIDTH, SCREEN_HEIGHT);
+
+	font = new Font(window->GetRenderer());
+	result = font->LoadFont();
+	score = new Score(font);
+
+	return result;
 }
 
 void App::OnUpdate()
@@ -48,20 +57,29 @@ void App::OnLoop()
 			{
 				quit = true;
 			}
+			if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)
+			{
+				pause = !pause;
+			}
 		}
 
-		HandleEvents();
-
-		if (hasMoved)
+		if (!pause)
 		{
-			OnUpdate();
+			HandleEvents();
 
-			CheckCollisions();
+			if (hasMoved)
+			{
+				OnUpdate();
+
+				CheckCollisions();
+			}
 		}
 
 		//Clear screen
 		SDL_SetRenderDrawColor(window->GetRenderer(), 0x0, 0x00, 0x00, 0x00);
 		SDL_RenderClear(window->GetRenderer());
+
+		score->RenderScore();
 
 		for (GameObject* g : entities)
 		{
@@ -107,6 +125,15 @@ void App::CheckCollisions()
 void App::OnShutdown()
 {
 	entities.clear();
+
+	delete ai;
+	ai = nullptr;
+
+	delete score;
+	score = nullptr;
+
+	delete font;
+	font = nullptr;
 
 	delete window;
 	window = nullptr;
@@ -182,11 +209,13 @@ bool App::CheckWin()
 
 	if (ballPos + ballWidth < 0.0f)
 	{
+		score->AddPlayerRightScore();
 		return true;
 	}
 
 	if (ballPos + ballWidth > SCREEN_WIDTH)
 	{
+		score->AddPlayerScore();
 		return true;
 	}
 

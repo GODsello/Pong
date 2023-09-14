@@ -22,6 +22,18 @@ bool Window::Init(const char* title, const int width, const int height)
 		return false;
 	}
 
+	if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG))
+	{
+		printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
+		return false;
+	}
+
+	if (TTF_Init() == -1)
+	{
+		printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
+		return false;
+	}
+
 	window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, NULL);
 	if (!window)
 	{
@@ -47,6 +59,8 @@ void Window::CleanUp()
 {
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
+	TTF_Quit();
+	IMG_Quit();
 	SDL_Quit();
 
 	width = 0;
