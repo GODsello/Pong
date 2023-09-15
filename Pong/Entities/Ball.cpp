@@ -29,9 +29,16 @@ void Ball::Update()
 	xPos += xDir * velocity * *deltaTime;
 	yPos += yDir * velocity * *deltaTime;
 
-	if (yPos < 0.0f || yPos + height > SCREEN_HEIGHT)
+
+	// Stops ball for getting stuck in the border
+	if (yPos < 0.0f)
 	{
-		yPos -= yDir * velocity * *deltaTime;
+		yPos = 1.0f;
+		yDir *= -1.0f;
+	}
+	if (yPos + height > SCREEN_HEIGHT)
+	{
+		yPos = SCREEN_HEIGHT - height - 1.0f;
 		yDir *= -1.0f;
 	}
 

@@ -12,6 +12,7 @@ App::App(){
 	score = nullptr;
 	pause = false;
 	font = nullptr;
+	onePlayer = true;
 }
 
 App::~App(){
@@ -25,6 +26,8 @@ bool App::OnInit()
 	font = new Font(window->GetRenderer());
 	result = font->LoadFont();
 	score = new Score(font);
+	mainMenu = new MainMenu(font);
+	pauseMenu = new Pause(font);
 
 	return result;
 }
@@ -59,7 +62,23 @@ void App::OnLoop()
 			}
 			if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)
 			{
+				pauseMenu->ResetMenu();
 				pause = !pause;
+			}
+			if (pause)
+			{
+				int pauseResult = pauseMenu->HandleMenuEvents(&event);
+				switch (pauseResult)
+				{
+				case RESUME:
+					pause = false;
+					break;
+				case QUIT:
+					quit = true;
+					break;
+				default:
+					break;
+				}
 			}
 		}
 
@@ -86,6 +105,11 @@ void App::OnLoop()
 			g->Render(window->GetRenderer());
 		}
 
+		if (pause)
+		{
+			pauseMenu->RenderMenu();
+		}
+
 		SDL_RenderPresent(window->GetRenderer());
 
 		hasWin = CheckWin();
@@ -102,6 +126,51 @@ void App::OnLoop()
 		}
 		deltaTime = (SDL_GetTicks() - startTime);
 	}
+}
+
+int App::OnMainMenuLoop()
+{
+	bool stopLoop = false;
+	int selected = -1;
+
+	SDL_Event event;
+
+	while (!stopLoop)
+	{
+		float startTime = SDL_GetTicks();
+		while (SDL_PollEvent(&event) != 0)
+		{
+			if (event.type == SDL_QUIT)
+			{
+				stopLoop = true;
+				selected = MAIN_QUIT;
+			}
+			if (selected < 0)
+			{
+				selected = mainMenu->HandleMenuEvents(&event);
+				if (selected >= 0)
+				{
+					stopLoop = true;
+				}
+			}
+		}
+
+		//Clear screen
+		SDL_SetRenderDrawColor(window->GetRenderer(), 0x0, 0x00, 0x00, 0x00);
+		SDL_RenderClear(window->GetRenderer());
+
+		mainMenu->RenderMenu();
+
+		SDL_RenderPresent(window->GetRenderer());
+
+		deltaTime = (SDL_GetTicks() - startTime);
+		if (deltaTime < TICKS_PER_FRAME)
+		{
+			SDL_Delay(TICKS_PER_FRAME - deltaTime);
+		}
+		deltaTime = (SDL_GetTicks() - startTime);
+	}
+	return selected;
 }
 
 void App::CheckCollisions()
@@ -132,6 +201,9 @@ void App::OnShutdown()
 	delete score;
 	score = nullptr;
 
+	delete pauseMenu;
+	pauseMenu = nullptr;
+
 	delete font;
 	font = nullptr;
 
@@ -152,17 +224,31 @@ void App::HandleEvents()
 		player->MoveDown(deltaTime);
 		hasMoved = true;
 	}
-	/*if (currentKeyStates[SDL_SCANCODE_UP])
-	{
-		playerRight->MoveUp(deltaTime);
-		hasMoved = true;
-	}
-	if (currentKeyStates[SDL_SCANCODE_DOWN]) {
-		playerRight->MoveDown(deltaTime);
-		hasMoved = true;
-	}*/
 
-	ai->MovePlayer(deltaTime);
+	if (onePlayer)
+	{
+		ai->MovePlayer(deltaTime);
+	}
+	else {
+		if (currentKeyStates[SDL_SCANCODE_UP])
+		{
+			playerRight->MoveUp(deltaTime);
+			hasMoved = true;
+		}
+		if (currentKeyStates[SDL_SCANCODE_DOWN]) {
+			playerRight->MoveDown(deltaTime);
+			hasMoved = true;
+		}
+	}
+}
+
+void App::ResetState(bool onePlayer)
+{
+	this->onePlayer = onePlayer;
+	hasWin = false;
+	pause = false;
+	hasMoved = false;
+	score->ResetScore();
 }
 
 void App::LoadEntities() {
@@ -187,7 +273,10 @@ void App::LoadEntities() {
 		1.0f);
 	entities.push_back(playerRight);
 
-	ai = new AI(playerRight, ball, 20.0f);
+	if (onePlayer)
+	{
+		ai = new AI(playerRight, ball, 20.0f);
+	}
 }
 
 void App::DeleteEntities()

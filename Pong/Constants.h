@@ -23,3 +23,14 @@ enum {
 	MEDIUM_FONT = 36,
 	BIG_FONT = 48
 };
+
+enum {
+	MAIN_ONE_PLAYER,
+	MAIN_TWO_PLAYER,
+	MAIN_QUIT,
+};
+
+enum {
+	RESUME,
+	QUIT,
+};

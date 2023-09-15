@@ -34,22 +34,22 @@ bool Font::LoadFont()
 	return true;
 }
 
-LTexture* Font::CreateTexture(int fontSize, std::string text, SDL_Color color)
+LTexture* Font::CreateTexture(int fontSize, std::string text, SDL_Color color, SDL_Color bg)
 {
 	SDL_Surface* surface = nullptr;
 	switch (fontSize)
 	{
 	case SMALL_FONT:
-		surface = TTF_RenderText_Solid(smallFont, text.c_str(), color);
+		surface = TTF_RenderText_LCD(smallFont, text.c_str(), color, bg);
 		break;
 	case MEDIUM_FONT:
-		surface = TTF_RenderText_Solid(mediumFont, text.c_str(), color);
+		surface = TTF_RenderText_LCD(mediumFont, text.c_str(), color, bg);
 		break;
 	case BIG_FONT:
-		surface = TTF_RenderText_Solid(smallFont, text.c_str(), color);
+		surface = TTF_RenderText_LCD(bigFont, text.c_str(), color, bg);
 		break;
 	default:
-		surface = TTF_RenderText_Solid(smallFont, text.c_str(), color);
+		surface = TTF_RenderText_LCD(smallFont, text.c_str(), color, bg);
 		break;
 	}
 

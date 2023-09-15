@@ -11,6 +11,8 @@
 #include "Entities/Player.h";
 #include "AI/AI.h";
 #include "Score.h";
+#include "Menus/Pause.h";
+#include "Menus/MainMenu.h";
 
 #include "Constants.h";
 
@@ -22,16 +24,18 @@ public:
 
 	bool OnInit();
 	void OnLoop();
+	int OnMainMenuLoop();
 	void OnUpdate();
 	void OnShutdown();
 	void HandleEvents();
 
 	void CheckCollisions();
+	void ResetState(bool onePlayer);
 
 	void LoadEntities();
+	void DeleteEntities();
 
 private:
-	void DeleteEntities();
 	bool CheckWin();
 
 	Window* window;
@@ -44,9 +48,12 @@ private:
 	AI* ai;
 	Score* score;
 	Font* font;
+	Pause* pauseMenu;
+	MainMenu* mainMenu;
 
 	bool hasWin;
 	bool hasMoved;
 	bool pause;
+	bool onePlayer;
 };
 

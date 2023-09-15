@@ -18,7 +18,8 @@ public:
 	~Font();
 
 	bool LoadFont();
-	LTexture* CreateTexture(int fontSize, std::string text, SDL_Color color);
+	LTexture* CreateTexture(int fontSize, std::string text, 
+		SDL_Color color, SDL_Color bg = { 0,0,0 });
 	void RenderTexture(LTexture* texture, int xPos, int yPos);
 
 	void ClearTexture(LTexture* texture);

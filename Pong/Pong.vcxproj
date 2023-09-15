@@ -162,6 +162,8 @@
     <ClCompile Include="GameObject\GameObject.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Entities\Player.cpp" />
+    <ClCompile Include="Menus\MainMenu.cpp" />
+    <ClCompile Include="Menus\Pause.cpp" />
     <ClCompile Include="Score.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
@@ -173,6 +175,8 @@
     <ClInclude Include="Font\Font.h" />
     <ClInclude Include="GameObject\GameObject.h" />
     <ClInclude Include="Entities\Player.h" />
+    <ClInclude Include="Menus\MainMenu.h" />
+    <ClInclude Include="Menus\Pause.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Score.h" />
     <ClInclude Include="Window.h" />
