@@ -8,6 +8,11 @@ class AI
 public:
 	AI();
 	AI(Player* player, Ball* ball, float threshold);
+	~AI();
+
+	/*
+		Moves player based on ball position and direction
+	*/
 	void MovePlayer(float deltaTime);
 
 private:

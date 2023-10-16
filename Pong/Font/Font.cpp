@@ -8,6 +8,17 @@ Font::Font(SDL_Renderer* renderer)
 	this->renderer = renderer;
 }
 
+Font::~Font()
+{
+	TTF_CloseFont(smallFont);
+	TTF_CloseFont(mediumFont);
+	TTF_CloseFont(bigFont);
+	smallFont = nullptr;
+	mediumFont = nullptr;
+	bigFont = nullptr;
+	renderer = nullptr;
+}
+
 bool Font::LoadFont()
 {
 	smallFont = TTF_OpenFont("Font/pixelfont.ttf", SMALL_FONT);
@@ -84,15 +95,4 @@ void Font::ClearTexture(LTexture* texture)
 		SDL_DestroyTexture(texture->texture);
 		delete texture;
 	}
-}
-
-Font::~Font()
-{
-	TTF_CloseFont(smallFont);
-	TTF_CloseFont(mediumFont);
-	TTF_CloseFont(bigFont);
-	smallFont = nullptr;
-	mediumFont = nullptr;
-	bigFont = nullptr;
-	renderer = nullptr;
 }

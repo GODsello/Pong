@@ -11,6 +11,7 @@ public:
 	int HandleMenuEvents(SDL_Event* e);
 	void RenderMenu();
 	void ResetMenu() { selected = MAIN_ONE_PLAYER; };
+
 private:
 	Font* font;
 	LTexture* title;

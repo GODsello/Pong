@@ -1,9 +1,10 @@
 #pragma once
 
 #include <SDL.h>
+#include <SDL_ttf.h>
+
 #include <vector>
 #include <string>
-#include <SDL_ttf.h>
 
 #include "Window.h";
 #include "GameObject/GameObject.h";
@@ -13,7 +14,6 @@
 #include "Score.h";
 #include "Menus/Pause.h";
 #include "Menus/MainMenu.h";
-
 #include "Constants.h";
 
 class App
@@ -22,29 +22,71 @@ public:
 	App();
 	~App();
 
+	/*
+		Creates window and initializes systems
+	*/
 	bool OnInit();
-	void OnLoop();
-	int OnMainMenuLoop();
+
+	/*
+		Updates entities
+	*/
 	void OnUpdate();
+
+	/*
+		Game loop
+	*/
+	void OnLoop();
+
+	/*
+		Main menu loop
+		Returns option selected
+	*/
+	int OnMainMenuLoop();
+
+	/*
+		Check collisions between entities
+	*/
+	void CheckCollisions();
+
+	/*
+		Destroys entities, window and systems
+	*/
 	void OnShutdown();
+
+	/*
+		Handles keyboard events
+	*/
 	void HandleEvents();
 
-	void CheckCollisions();
+	/*
+		Resets game state. Sets onePlayer property
+	*/
 	void ResetState(bool onePlayer);
 
+	/*
+		Adds entities to the vector of entities
+	*/
 	void LoadEntities();
+
+	/*
+		Removes entities from the vector of entities
+	*/
 	void DeleteEntities();
 
 private:
+	/*
+		Checks if the ball has gone out and in which side
+	*/
 	bool CheckWin();
 
 	Window* window;
 	float deltaTime;
-	std::vector<GameObject*> entities;
+	
 	Player* player;
 	Player* playerRight;
 	Ball* ball;
 
+	std::vector<GameObject*> entities;
 	AI* ai;
 	Score* score;
 	Font* font;

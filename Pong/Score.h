@@ -2,6 +2,7 @@
 
 #include <string>
 #include <sstream>
+
 #include "Font/Font.h";
 
 class Score
@@ -10,14 +11,38 @@ public:
 	Score(Font* font);
 	~Score();
 
+	/*
+		Adds 1 to the left player score
+	*/
 	void AddPlayerScore();
+
+	/*
+		Adds 1 to the right player score
+	*/
 	void AddPlayerRightScore();
 
-	void RenderScore();
-
+	/*
+		Sets both scores to zero
+	*/
 	void ResetScore();
 
+	/*
+		Renders score text texture
+	*/
+	void RenderScore();
+
+
 private:
+	/*
+		Destroys font and texture
+	*/
+	void ClearTexture();
+
+	/*
+		Updates score texture to new value
+	*/
+	void UpdateScoreText();
+
 	unsigned int playerScore;
 	unsigned int playerRightScore;
 
@@ -25,8 +50,5 @@ private:
 	LTexture* texture;
 
 	std::ostringstream scoreText;
-
-	void ClearTexture();
-	void UpdateScoreText();
 };
 

@@ -11,6 +11,7 @@ public:
 	int HandleMenuEvents(SDL_Event* e);
 	void RenderMenu();
 	void ResetMenu() { selected = RESUME; };
+
 private:
 	Font* font;
 	LTexture* title;

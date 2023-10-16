@@ -12,6 +12,22 @@ Pause::Pause(Font* font)
 	ResetMenu();
 }
 
+Pause::~Pause()
+{
+	font->ClearTexture(title);
+	font->ClearTexture(resume);
+	font->ClearTexture(resumeSelected);
+	font->ClearTexture(quit);
+	font->ClearTexture(quitSelected);
+	title = nullptr;
+	resume = nullptr;
+	resumeSelected = nullptr;
+	quit = nullptr;
+	quitSelected = nullptr;
+
+	font = nullptr;
+}
+
 int Pause::HandleMenuEvents(SDL_Event* e)
 {
 	if (e->type == SDL_KEYDOWN && 
@@ -50,20 +66,4 @@ void Pause::RenderMenu()
 			SCREEN_WIDTH / 2.0f - quitSelected->width / 2.0f,
 			SCREEN_HEIGHT * (3.5f / 5.0f));
 	}
-}
-
-Pause::~Pause()
-{
-	font->ClearTexture(title);
-	font->ClearTexture(resume);
-	font->ClearTexture(resumeSelected);
-	font->ClearTexture(quit);
-	font->ClearTexture(quitSelected);
-	title = nullptr;
-	resume = nullptr;
-	resumeSelected = nullptr;
-	quit = nullptr;
-	quitSelected = nullptr;
-
-	font = nullptr;
 }

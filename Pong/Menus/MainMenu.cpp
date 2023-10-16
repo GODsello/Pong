@@ -14,6 +14,26 @@ MainMenu::MainMenu(Font* font)
 	ResetMenu();
 }
 
+MainMenu::~MainMenu()
+{
+	font->ClearTexture(title);
+	font->ClearTexture(onePlayer);
+	font->ClearTexture(onePlayerSelected);
+	font->ClearTexture(twoPlayers);
+	font->ClearTexture(twoPlayersSelected);
+	font->ClearTexture(quit);
+	font->ClearTexture(quitSelected);
+	title = nullptr;
+	onePlayer = nullptr;
+	onePlayerSelected = nullptr;
+	twoPlayers = nullptr;
+	twoPlayersSelected = nullptr;
+	quit = nullptr;
+	quitSelected = nullptr;
+
+	font = nullptr;
+}
+
 int MainMenu::HandleMenuEvents(SDL_Event* e)
 {
 	if (e->type == SDL_KEYDOWN && (e->key.keysym.sym == SDLK_w || e->key.keysym.sym == SDLK_UP))
@@ -74,24 +94,4 @@ void MainMenu::RenderMenu()
 			SCREEN_WIDTH / 2.0f - quit->width / 2.0f,
 			SCREEN_HEIGHT * (4.0f / 5.0f));
 	}
-}
-
-MainMenu::~MainMenu()
-{
-	font->ClearTexture(title);
-	font->ClearTexture(onePlayer);
-	font->ClearTexture(onePlayerSelected);
-	font->ClearTexture(twoPlayers);
-	font->ClearTexture(twoPlayersSelected);
-	font->ClearTexture(quit);
-	font->ClearTexture(quitSelected);
-	title = nullptr;
-	onePlayer = nullptr;
-	onePlayerSelected = nullptr;
-	twoPlayers = nullptr;
-	twoPlayersSelected = nullptr;
-	quit = nullptr;
-	quitSelected = nullptr;
-
-	font = nullptr;
 }

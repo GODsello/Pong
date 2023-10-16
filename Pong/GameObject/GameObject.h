@@ -3,6 +3,9 @@
 #include <vector>
 #include <SDL.h>
 
+/*
+	Class with the virtual methods that the entities should have
+*/
 class GameObject
 {
 public:

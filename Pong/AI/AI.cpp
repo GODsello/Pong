@@ -14,6 +14,12 @@ AI::AI(Player* player, Ball* ball, float threshold)
 	this->threshold = threshold;
 }
 
+AI::~AI()
+{
+	handledPlayer = nullptr;
+	ball = nullptr;
+}
+
 void AI::MovePlayer(float deltaTime)
 {
 	if (ball->GetXDir() > 0.0f && ball->GetRect()->x > SCREEN_WIDTH / 2.0f)

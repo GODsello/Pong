@@ -8,6 +8,12 @@ Score::Score(Font* font)
 	UpdateScoreText();
 }
 
+Score::~Score()
+{
+	ClearTexture();
+	font = nullptr;
+}
+
 void Score::AddPlayerScore()
 {
 	playerScore++;
@@ -50,10 +56,4 @@ void Score::UpdateScoreText()
 	scoreText << playerScore << " - " << playerRightScore;
 	ClearTexture();
 	texture = font->CreateTexture(MEDIUM_FONT, scoreText.str(), { 255, 255, 255 });
-}
-
-Score::~Score()
-{
-	ClearTexture();
-	font = nullptr;
 }

@@ -21,6 +21,7 @@ App::~App(){
 
 bool App::OnInit()
 {
+	// Create window
 	bool result = window->Init("Pong", SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	font = new Font(window->GetRenderer());
@@ -119,6 +120,7 @@ void App::OnLoop()
 			hasMoved = false;
 		}
 		
+		// FPS handle
 		deltaTime = (SDL_GetTicks() - startTime);
 		if (deltaTime < TICKS_PER_FRAME)
 		{
