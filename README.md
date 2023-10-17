@@ -9,3 +9,5 @@ SDL2.lib
 SDL2main.lib
 SDL2_ttf.lib
 SDL2_image.lib
+
+It is published in itch.io, in the following link: https://godsello.itch.io/pong
