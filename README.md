@@ -11,3 +11,5 @@ SDL2_ttf.lib
 SDL2_image.lib
 
 It is published in itch.io, in the following link: https://godsello.itch.io/pong
+
+![Pong](pong.PNG?raw=true "Pong")
